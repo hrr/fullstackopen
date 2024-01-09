@@ -1,30 +1,43 @@
 const App = () => {
-  const course = 'Half Stack application development'
-  const parts = [{ name: 'part1', title: 'Fundamentals of React', exercise: 10 },
-                { name: 'part2', title: 'Using props to pass data', exercise: 7 },
-                { name: 'part3', title: 'State of a component', exercise: 14 }]
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
+
   const Header = (props) => {
     return (
-      <h1>{props.course}</h1>
+      <h1>{props.course.name}</h1>
     )
   }
 
   const Content = (props) => {
     return (
       <div>
-        <Part part='part1' />
-        <Part part='part2' />
-        <Part part='part3' />
+        <Part part={props.course.parts[0]} />
+        <Part part={props.course.parts[1]} />
+        <Part part={props.course.parts[2]} />
       </div>
     )
   }
 
   const Part = (props) => {
-    const part = parts.find(x => x.name === props.part)
     return (
       <div>
         <p>
-          {part.title} {part.exercise}
+          {props.part.name} {props.part.exercises}
         </p>
       </div>
     )
@@ -33,8 +46,8 @@ const App = () => {
   return (
     <div>
       <Header course={course} />
-      <Content />
-      <p>Number of exercises {parts.length}</p>
+      <Content course={course} />
+      <p>Number of exercises {course.parts.length}</p>
     </div>
   )
 }

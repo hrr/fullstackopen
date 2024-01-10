@@ -24,6 +24,12 @@ const Part = (props) => {
   )
 }
 
+const Total = (props) => {
+  return (
+    <p>Number of exercises {props.course.parts.reduce((prev, curr) => prev + curr.exercises, 0)}</p>
+  )
+}
+
 const App = () => {
   const course = {
     name: 'Half Stack application development',
@@ -47,7 +53,7 @@ const App = () => {
     <div>
       <Header course={course} />
       <Content course={course} />
-      <p>Number of exercises {course.parts.length}</p>
+      <Total course={course} />
     </div>
   )
 }

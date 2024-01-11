@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import countryService from './services/countries'
 import Country from './components/Country'
+import CountryWrapper from './components/CountryWrapper'
 
 const App = () => {
   const [countries, setCountries] = useState([])
@@ -10,7 +11,6 @@ const App = () => {
   const handleSearchNameChange = (event) => {
       const newSearchName = event.target.value
       setSearchName(newSearchName)
-      console.log(countries.filter(c => c.name.common.toLowerCase().includes(newSearchName.toLowerCase())).length)
       setMatches(countries.filter(c => c.name.common.toLowerCase().includes(newSearchName.toLowerCase())))
   }
 
@@ -30,7 +30,7 @@ const App = () => {
     <div>
       find countries <input value={searchName} onChange={handleSearchNameChange} />
       {searchName.length > 0 && matches.length > 10 && <div>Too many matches, specify another filter</div>}
-      {searchName.length > 0 && matches.length <= 10 && matches.length !== 1 && matches.map(c => <div key={c.name.common}>{c.name.common}</div>)}
+      {searchName.length > 0 && matches.length <= 10 && matches.length !== 1 && matches.map(c => <CountryWrapper key={c.name.common} country={c} /> )}
       {searchName.length > 0 && matches.length === 1 && matches.map(c => <Country country={matches[0]}/>)}
     </div>
   )

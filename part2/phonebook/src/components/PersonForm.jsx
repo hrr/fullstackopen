@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import personService from '../services/persons'
 
-const Filter = ({ setFilteredPersons, setPersons, persons, setStatusMessage }) => {
+const Filter = ({ setPersons, persons, setStatusMessage }) => {
 
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
@@ -20,7 +20,6 @@ const Filter = ({ setFilteredPersons, setPersons, persons, setStatusMessage }) =
         personService.create(newPerson)
         const newPersons = persons.concat(newPerson)
         setPersons(newPersons)
-        setFilteredPersons(newPersons)
         setTimeout(() => {
           setStatusMessage({status: 'hide'})
         }, 5000)  
@@ -39,7 +38,6 @@ const Filter = ({ setFilteredPersons, setPersons, persons, setStatusMessage }) =
   
         setStatusMessage({ status: 'success', message: `Updated ${newName}`})
         setPersons(newPersons)
-        setFilteredPersons(newPersons)
     }
 
     const clearForm = () => {

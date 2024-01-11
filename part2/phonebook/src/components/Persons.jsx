@@ -1,6 +1,6 @@
 import personService from '../services/persons'
 
-const Persons = ({ filteredPersons, setPersons, setFilteredPersons, setStatusMessage }) => {
+const Persons = ({ filteredPersons, setPersons, setStatusMessage }) => {
 
   const handleDeletePerson = (event) => {
     const personId = event.target.value
@@ -20,7 +20,6 @@ const Persons = ({ filteredPersons, setPersons, setFilteredPersons, setStatusMes
       }, 5000)
 
       setPersons(updatedPersons)
-      setFilteredPersons(updatedPersons)
     }
   }
   return <>

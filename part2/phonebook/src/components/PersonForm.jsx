@@ -9,14 +9,31 @@ const Filter = ({ setFilteredPersons, setPersons, persons }) => {
     const addPerson = (event) => {
         event.preventDefault()
         if (persons.findIndex(x => x.name === newName) >= 0) {
-            alert(`${newName} is already added to phonebook`)
+            const conf = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+            if (conf)
+                updatePerson()
+            clearForm()
             return
+
         }
         const newPerson = { name: newName, number: newNumber, id: persons.length + 1 + ''}
         personService.create(newPerson)
         const newPersons = persons.concat(newPerson)
         setPersons(newPersons)
         setFilteredPersons(newPersons)
+        clearForm()
+    }
+
+    const updatePerson = () => {
+        const person = persons.find(x => x.name === newName)
+        person.number = newNumber
+        personService.update(person.id, person)
+        const newPersons = persons.filter(p => p.id !== person.id).concat(person)
+        setPersons(newPersons)
+        setFilteredPersons(newPersons)
+    }
+
+    const clearForm = () => {
         setNewName('')
         setNewNumber('')
     }

@@ -17,7 +17,7 @@ const Weather = ({ country }) => {
         {capitalWeather &&
             <div>
                 <div>temperature {capitalWeather.current.temp} Celcius</div>
-                <div><img src={`https://openweathermap.org/img/wn/${capitalWeather.current.weather.icon}.png`} /></div>
+                <div><img src={`https://openweathermap.org/img/wn/${capitalWeather.current.weather[0].icon}.png`} /></div>
                 <div>wind {capitalWeather.current.wind_speed} m/s</div>
             </div>
         }

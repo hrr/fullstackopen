@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import personService from '../services/persons'
 
 const Filter = ({ setFilteredPersons, setPersons, persons }) => {
 
@@ -11,6 +12,7 @@ const Filter = ({ setFilteredPersons, setPersons, persons }) => {
             alert(`${newName} is already added to phonebook`)
             return
         }
+        personService.create({ name: newName, number: newNumber, id: persons.length + 1})
         const newPersons = persons.concat({ name: newName, number: newNumber, id: persons.length + 1})
         setPersons(newPersons)
         setFilteredPersons(newPersons)

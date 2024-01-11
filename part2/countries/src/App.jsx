@@ -31,7 +31,7 @@ const App = () => {
       find countries <input value={searchName} onChange={handleSearchNameChange} />
       {searchName.length > 0 && matches.length > 10 && <div>Too many matches, specify another filter</div>}
       {searchName.length > 0 && matches.length <= 10 && matches.length !== 1 && matches.map(c => <CountryWrapper key={c.name.common} country={c} /> )}
-      {searchName.length > 0 && matches.length === 1 && matches.map(c => <Country country={matches[0]}/>)}
+      {searchName.length > 0 && matches.length === 1 && matches.map(c => <Country key={matches[0].name.common} country={matches[0]}/>)}
     </div>
   )
 }

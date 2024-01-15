@@ -16,15 +16,17 @@ const Filter = ({ setPersons, persons, setStatusMessage }) => {
             return
 
         }
-        const newPerson = { name: newName, number: newNumber, id: persons.length + 1 + ''}
-        personService.create(newPerson)
-        const newPersons = persons.concat(newPerson)
-        setPersons(newPersons)
-        setTimeout(() => {
-          setStatusMessage({status: 'hide'})
-        }, 5000)  
-        setStatusMessage({ status: 'success', message: `Added ${newName}`})
-        clearForm()
+        const newPerson = { name: newName, number: newNumber }
+        const resp = personService.create(newPerson).then(p => {
+            console.log(p);
+            const newPersons = persons.concat(p)
+            setPersons(newPersons)
+            setTimeout(() => {
+              setStatusMessage({status: 'hide'})
+            }, 5000)  
+            setStatusMessage({ status: 'success', message: `Added ${newName}`})
+            clearForm()
+        })
     }
 
     const updatePerson = () => {

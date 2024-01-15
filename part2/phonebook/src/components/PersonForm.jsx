@@ -17,7 +17,7 @@ const Filter = ({ setPersons, persons, setStatusMessage }) => {
 
         }
         const newPerson = { name: newName, number: newNumber }
-        const resp = personService.create(newPerson).then(p => {
+        personService.create(newPerson).then(p => {
             console.log(p);
             const newPersons = persons.concat(p)
             setPersons(newPersons)
@@ -25,6 +25,13 @@ const Filter = ({ setPersons, persons, setStatusMessage }) => {
               setStatusMessage({status: 'hide'})
             }, 5000)  
             setStatusMessage({ status: 'success', message: `Added ${newName}`})
+            clearForm()
+        })
+        .catch(error => {
+            setTimeout(() => {
+              setStatusMessage({status: 'hide'})
+            }, 5000)  
+            setStatusMessage({ status: 'error', message: error.response.data.error})
             clearForm()
         })
     }

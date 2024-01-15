@@ -22,7 +22,7 @@ const Notification = ({ statusMessage }) => {
     }
 
     return (
-        <div style={statusMessage.status ? success : error}>
+        <div style={statusMessage.status === 'success' ? success : error}>
             {statusMessage.message}
         </div>
     )

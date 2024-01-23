@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [statusMessage, setStatusMessage] = useState({ status: 'hide' })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -27,10 +28,14 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setStatusMessage({ status: 'success', message: 'Logged in' })
       setTimeout(() => {
-        setErrorMessage(null)
+        setStatusMessage({ status: 'hide' })
+      }, 5000)
+    } catch (exception) {
+      setStatusMessage({ status: 'error', message: 'wrong username or password' })
+      setTimeout(() => {
+        setStatusMessage({ status: 'hide' })
       }, 5000)
     }
   }
@@ -43,10 +48,14 @@ const App = () => {
         blogTitle, blogAuthor, blogUrl, blogContent
       })
       setBlogs(blogs.concat(blog))
-    } catch (exception) {
-      setErrorMessage('Bad input')
+      setStatusMessage({ status: 'success', message: `a new blog ${blog.title} by ${blog.author} added`  })
       setTimeout(() => {
-        setErrorMessage(null)
+        setStatusMessage({ status: 'hide' })
+      }, 5000)
+    } catch (exception) {
+      setStatusMessage({ status: 'error', message: 'Bad input' })
+      setTimeout(() => {
+        setStatusMessage({ status: 'hide' })
       }, 5000)
     }
   }
@@ -136,9 +145,6 @@ const App = () => {
 
   const blogList = () => (
     <div>
-      <h2>blogs</h2>
-      <p>{user.name} logged in</p>
-      <button onClick={handleLogout}>logout</button>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
@@ -152,6 +158,19 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     }
+    function checkUserDataEventHandler() {
+      if (loggedUserJSON) {
+        const user = JSON.parse(loggedUserJSON)
+        setUser(user)
+        blogService.setToken(user.token)
+      }
+    }
+  
+    window.addEventListener('storage', checkUserDataEventHandler)
+  
+    return () => {
+      window.removeEventListener('storage', checkUserDataEventHandler)
+    }
   }, [])
 
   useEffect(() => {
@@ -162,6 +181,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification statusMessage={statusMessage} />
       {user === null ?
         loginForm() :
         <>{userInfo()}{newBlog()}{blogList()}</>

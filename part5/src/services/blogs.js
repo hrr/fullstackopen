@@ -34,6 +34,15 @@ const update = (data) => {
   return response
 }
 
+const del = (data) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': token
+  }
+  const request = axios.delete(`${baseUrl}/${data.id}`, { headers })
+  const response = request.then(response => response.data)
+  return response
+}
 
 
-export default { getAll, setToken, create, update }
+export default { getAll, setToken, create, update, del }

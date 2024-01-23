@@ -15,12 +15,8 @@ const App = () => {
 
   const newBlogFormRef = useRef()
 
-  const addBlog = async ({ blogTitle, blogAuthor, blogUrl, blogContent }) => {
+  const addBlogToggle = () => {
     newBlogFormRef.current.toggleVisibility()
-    const blog = await blogService.create({
-      blogTitle, blogAuthor, blogUrl, blogContent
-    })
-    return blog
   }
 
   const handleLogin = async (event) => {
@@ -132,7 +128,7 @@ const App = () => {
         <>
           {userInfo()}
           {<Togglable buttonLabel="new blog" ref={newBlogFormRef}>
-            <NewBlogForm setStatusMessage={setStatusMessage} addBlog={addBlog} setBlogs={setBlogs} blogs={blogs} />
+            <NewBlogForm setStatusMessage={setStatusMessage} toggleVisibility={addBlogToggle} setBlogs={setBlogs} blogs={blogs} />
           </Togglable>}
           {blogList()}
         </>

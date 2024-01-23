@@ -1,78 +1,86 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 
 const NewBlog = ({ setStatusMessage, toggleVisibility, setBlogs, blogs }) => {
-    const [blogTitle, setBlogTitle] = useState('')
-    const [blogAuthor, setBlogAuthor] = useState('')
-    const [blogUrl, setBlogUrl] = useState('')
-    const [blogContent, setBlogContent] = useState('')
-      
-    const handleAddBlog = async (event) => {
-        event.preventDefault()
-        try {
-            const blog = await blogService.create({
-              blogTitle, blogAuthor, blogUrl, blogContent
-            })
-            setBlogs(blogs.concat(blog))
+  const [blogTitle, setBlogTitle] = useState('')
+  const [blogAuthor, setBlogAuthor] = useState('')
+  const [blogUrl, setBlogUrl] = useState('')
+  const [blogContent, setBlogContent] = useState('')
 
-            setBlogTitle('')
-            setBlogAuthor('')
-            setBlogUrl('')
-            setBlogContent('')
+  const handleAddBlog = async (event) => {
+    event.preventDefault()
+    try {
+      const blog = await blogService.create({
+        blogTitle, blogAuthor, blogUrl, blogContent
+      })
+      setBlogs(blogs.concat(blog))
 
-            toggleVisibility()
-            setStatusMessage({ status: 'success', message: `a new blog ${blog.title} by ${blog.author} added` })
-            setTimeout(() => {
-                setStatusMessage({ status: 'hide' })
-            }, 5000)
-        } catch (exception) {
-            setStatusMessage({ status: 'error', message: `Bad input ${exception}` })
-            setTimeout(() => {
-                setStatusMessage({ status: 'hide' })
-            }, 5000)
-        }
+      setBlogTitle('')
+      setBlogAuthor('')
+      setBlogUrl('')
+      setBlogContent('')
+
+      toggleVisibility()
+      setStatusMessage({ status: 'success', message: `a new blog ${blog.title} by ${blog.author} added` })
+      setTimeout(() => {
+        setStatusMessage({ status: 'hide' })
+      }, 5000)
+    } catch (exception) {
+      setStatusMessage({ status: 'error', message: `Bad input ${exception}` })
+      setTimeout(() => {
+        setStatusMessage({ status: 'hide' })
+      }, 5000)
     }
+  }
 
-    return <form onSubmit={handleAddBlog}>
-        <h2>create new</h2>
-        <div>
+  return <form onSubmit={handleAddBlog}>
+    <h2>create new</h2>
+    <div>
             title
-            <input
-                type="text"
-                value={blogTitle}
-                name="Title"
-                onChange={({ target }) => setBlogTitle(target.value)}
-            />
-        </div>
-        <div>
+      <input
+        type="text"
+        value={blogTitle}
+        name="Title"
+        onChange={({ target }) => setBlogTitle(target.value)}
+      />
+    </div>
+    <div>
             author
-            <input
-                type="text"
-                value={blogAuthor}
-                name="Author"
-                onChange={({ target }) => setBlogAuthor(target.value)}
-            />
-        </div>
-        <div>
+      <input
+        type="text"
+        value={blogAuthor}
+        name="Author"
+        onChange={({ target }) => setBlogAuthor(target.value)}
+      />
+    </div>
+    <div>
             url
-            <input
-                type="text"
-                value={blogUrl}
-                name="Url"
-                onChange={({ target }) => setBlogUrl(target.value)}
-            />
-        </div>
-        <div>
+      <input
+        type="text"
+        value={blogUrl}
+        name="Url"
+        onChange={({ target }) => setBlogUrl(target.value)}
+      />
+    </div>
+    <div>
             content
-            <input
-                type="text"
-                value={blogContent}
-                name="Url"
-                onChange={({ target }) => setBlogContent(target.value)}
-            />
-        </div>
-        <button type="submit">create</button>
-    </form>
+      <input
+        type="text"
+        value={blogContent}
+        name="Url"
+        onChange={({ target }) => setBlogContent(target.value)}
+      />
+    </div>
+    <button type="submit">create</button>
+  </form>
+}
+
+NewBlog.propTypes = {
+  setStatusMessage: PropTypes.func.isRequired,
+  toggleVisibility: PropTypes.func.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  blogs: PropTypes.array.isRequired
 }
 
 export default NewBlog

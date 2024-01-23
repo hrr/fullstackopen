@@ -13,7 +13,7 @@ const getAll = () => {
 }
 
 const create = (data) => {
-  const { blogTitle, blogAuthor, blogUrl, blogContent} = data
+  const { blogTitle, blogAuthor, blogUrl, blogContent } = data
   const reqBody = { title: blogTitle, author: blogAuthor, url: blogUrl, content: blogContent }
   const headers = {
     'Content-Type': 'application/json',

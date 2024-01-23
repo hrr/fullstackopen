@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -10,10 +12,16 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [blogTitle, setBlogTitle] = useState('')
-  const [blogAuthor, setBlogAuthor] = useState('')
-  const [blogUrl, setBlogUrl] = useState('')
-  const [blogContent, setBlogContent] = useState('')
+
+  const newBlogFormRef = useRef()
+
+  const addBlog = async ({ blogTitle, blogAuthor, blogUrl, blogContent }) => {
+    newBlogFormRef.current.toggleVisibility()
+    const blog = await blogService.create({
+      blogTitle, blogAuthor, blogUrl, blogContent
+    })
+    return blog
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -34,26 +42,6 @@ const App = () => {
       }, 5000)
     } catch (exception) {
       setStatusMessage({ status: 'error', message: 'wrong username or password' })
-      setTimeout(() => {
-        setStatusMessage({ status: 'hide' })
-      }, 5000)
-    }
-  }
-
-  const handleAddBlog = async (event) => {
-    event.preventDefault()
-
-    try {
-      const blog = await blogService.create({
-        blogTitle, blogAuthor, blogUrl, blogContent
-      })
-      setBlogs(blogs.concat(blog))
-      setStatusMessage({ status: 'success', message: `a new blog ${blog.title} by ${blog.author} added`  })
-      setTimeout(() => {
-        setStatusMessage({ status: 'hide' })
-      }, 5000)
-    } catch (exception) {
-      setStatusMessage({ status: 'error', message: 'Bad input' })
       setTimeout(() => {
         setStatusMessage({ status: 'hide' })
       }, 5000)
@@ -90,49 +78,6 @@ const App = () => {
     </form>
   )
 
-  const newBlog = () => (
-    <form onSubmit={handleAddBlog}>
-      <h2>create new</h2>
-      <div>
-        title
-        <input
-          type="text"
-          value={blogTitle}
-          name="Title"
-          onChange={({ target }) => setBlogTitle(target.value)}
-        />
-      </div>
-      <div>
-        author
-        <input
-          type="text"
-          value={blogAuthor}
-          name="Author"
-          onChange={({ target }) => setBlogAuthor(target.value)}
-        />
-      </div>
-      <div>
-        url
-        <input
-          type="text"
-          value={blogUrl}
-          name="Url"
-          onChange={({ target }) => setBlogUrl(target.value)}
-        />
-      </div>
-      <div>
-        content
-        <input
-          type="text"
-          value={blogContent}
-          name="Url"
-          onChange={({ target }) => setBlogContent(target.value)}
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>
-  )
-
   const userInfo = () => (
     <div>
       <h2>blogs</h2>
@@ -165,9 +110,9 @@ const App = () => {
         blogService.setToken(user.token)
       }
     }
-  
+
     window.addEventListener('storage', checkUserDataEventHandler)
-  
+
     return () => {
       window.removeEventListener('storage', checkUserDataEventHandler)
     }
@@ -184,7 +129,13 @@ const App = () => {
       <Notification statusMessage={statusMessage} />
       {user === null ?
         loginForm() :
-        <>{userInfo()}{newBlog()}{blogList()}</>
+        <>
+          {userInfo()}
+          {<Togglable buttonLabel="new blog" ref={newBlogFormRef}>
+            <NewBlogForm setStatusMessage={setStatusMessage} addBlog={addBlog} setBlogs={setBlogs} blogs={blogs} />
+          </Togglable>}
+          {blogList()}
+        </>
       }
     </div>
   )

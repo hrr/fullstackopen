@@ -9,6 +9,10 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [blogTitle, setBlogTitle] = useState('')
+  const [blogAuthor, setBlogAuthor] = useState('')
+  const [blogUrl, setBlogUrl] = useState('')
+  const [blogContent, setBlogContent] = useState('')
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -25,6 +29,22 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  const handleAddBlog = async (event) => {
+    event.preventDefault()
+
+    try {
+      const blog = await blogService.create({
+        blogTitle, blogAuthor, blogUrl, blogContent
+      })
+      setBlogs(blogs.concat(blog))
+    } catch (exception) {
+      setErrorMessage('Bad input')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -61,6 +81,59 @@ const App = () => {
     </form>
   )
 
+  const newBlog = () => (
+    <form onSubmit={handleAddBlog}>
+      <h2>create new</h2>
+      <div>
+        title
+        <input
+          type="text"
+          value={blogTitle}
+          name="Title"
+          onChange={({ target }) => setBlogTitle(target.value)}
+        />
+      </div>
+      <div>
+        author
+        <input
+          type="text"
+          value={blogAuthor}
+          name="Author"
+          onChange={({ target }) => setBlogAuthor(target.value)}
+        />
+      </div>
+      <div>
+        url
+        <input
+          type="text"
+          value={blogUrl}
+          name="Url"
+          onChange={({ target }) => setBlogUrl(target.value)}
+        />
+      </div>
+      <div>
+        content
+        <input
+          type="text"
+          value={blogContent}
+          name="Url"
+          onChange={({ target }) => setBlogContent(target.value)}
+        />
+      </div>
+      <button type="submit">create</button>
+    </form>
+  )
+
+  const userInfo = () => (
+    <div>
+      <h2>blogs</h2>
+      <p>
+        {user.name} logged in
+        <button onClick={handleLogout}>logout</button>
+      </p>
+    </div>
+  )
+
   const blogList = () => (
     <div>
       <h2>blogs</h2>
@@ -91,7 +164,7 @@ const App = () => {
     <div>
       {user === null ?
         loginForm() :
-        blogList()
+        <>{userInfo()}{newBlog()}{blogList()}</>
       }
     </div>
   )

@@ -20,7 +20,8 @@ const create = (data) => {
     'Authorization': token
   }
   const request = axios.post(baseUrl, reqBody, { headers })
-  return request.then(response => response.data)
+  const response = request.then(response => response.data)
+  return response
 }
 
 export default { getAll, setToken, create }

@@ -1,7 +1,8 @@
 import { useRef } from 'react'
 import Togglable from './Togglable'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setStatusMessage }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,8 +12,22 @@ const Blog = ({ blog }) => {
   }
 
   const blogToggleRef = useRef()
-  const blogToggle = () => {
-    blogToggleRef.current.toggleVisibility()
+
+  const handleLike = async () => {
+    try {
+      let newBlog = blog
+      newBlog.likes++
+      await blogService.update(newBlog)
+      setStatusMessage({ status: 'success', message: 'Blog post liked' })
+      setTimeout(() => {
+        setStatusMessage({ status: 'hide' })
+      }, 5000)
+    } catch (exception) {
+      setStatusMessage({ status: 'error', message: 'wrong username or password' })
+      setTimeout(() => {
+        setStatusMessage({ status: 'hide' })
+      }, 5000)
+    }
   }
 
   return <div style={blogStyle}>
@@ -20,7 +35,7 @@ const Blog = ({ blog }) => {
     <Togglable buttonLabel="view" ref={blogToggleRef}>
       <div>{blog.content}</div>
       <div>{blog.url}</div>
-      <div>likes {blog.likes}<button>like</button></div>
+      <div>likes {blog.likes}<button onClick={handleLike}>like</button></div>
       <div>{blog.user.name}</div>
     </Togglable>
   </div>

@@ -32,6 +32,12 @@ const reducer = (state = initialState, action) => {
         anecdote.id !== id ? anecdote : changedAnecdote
       )
       return newState
+    case 'NEW':
+      return state.concat({
+        content: action.payload.content,
+        id: getId(),
+        votes: 0
+      })
     default:
       return state
   }

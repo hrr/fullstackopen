@@ -15,11 +15,14 @@ const counterReducer = (state = initialState, action) => {
     case 'BAD':
       state = { ...state, bad: state.bad + 1 }
       break
+    case 'RESET':
+      state = initialState
+      break
     case 'ZERO':
       break
   }
   return state
-  
+
 }
 
 export default counterReducer

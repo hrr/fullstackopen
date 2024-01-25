@@ -20,10 +20,22 @@ const asObject = (anecdote) => {
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
+  switch (action.type) {
+    case 'VOTE':
+      const id = action.id
+      const anecdoteToChange = state.find(x => x.id === action.id)
+      const changedAnecdote = {
+        ...anecdoteToChange,
+        votes: anecdoteToChange.votes + 1
+      }
+      const newState = state.map(anecdote =>
+        anecdote.id !== id ? anecdote : changedAnecdote
+      )
+      return newState
+    default:
+      return state
+  }
 
-  return state
 }
 
 export default reducer

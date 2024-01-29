@@ -1,4 +1,3 @@
-import { createAnec } from '../reducers/anecdoteReducer'
 import { useDispatch } from 'react-redux'
 
 const AnecdoteForm = () => {
@@ -7,10 +6,10 @@ const AnecdoteForm = () => {
       event.preventDefault()
       const content = event.target.anec.value
       event.target.anec.value = ''
-      dispatch(createAnec({
-        type: 'anecdotes/createNote',
+      dispatch({
+        type: 'anecdotes/createAnec',
         payload: content,
-      }))
+      })
     }
 
     return <div>

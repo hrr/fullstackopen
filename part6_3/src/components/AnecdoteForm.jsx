@@ -2,7 +2,7 @@ import { createAnec } from '../reducers/anecdoteReducer'
 import { useDispatch } from 'react-redux'
 
 const AnecdoteForm = () => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
     const newAnec = (event) => {
       event.preventDefault()
       const content = event.target.anec.value

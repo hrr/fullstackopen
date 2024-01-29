@@ -3,14 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const AnecdoteForm = () => {
     const dispatch = useDispatch()
-    const anecdotes = useSelector(state => state)
+    const anecdotes = useSelector(state => state.anecdotes)
+    const filter = useSelector(state => state.filter)
   
     const vote = (id) => {
       dispatch(voteAnec(id))
     }
 
     return <>
-    {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+    {anecdotes.filter(x => x.content.includes(filter)).sort((a, b) => b.votes - a.votes).map(anecdote =>
       <div key={anecdote.id}>
         <div>
           {anecdote.content}

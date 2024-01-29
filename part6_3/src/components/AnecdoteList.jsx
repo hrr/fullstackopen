@@ -7,7 +7,10 @@ const AnecdoteForm = () => {
     const filter = useSelector(state => state.filter)
   
     const vote = (id) => {
-      dispatch(voteAnec(id))
+      dispatch(voteAnec({
+        type: 'anecdotes/voteAnec',
+        payload: id,
+      }))
     }
 
     return <>

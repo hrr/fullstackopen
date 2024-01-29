@@ -7,7 +7,10 @@ const AnecdoteForm = () => {
       event.preventDefault()
       const content = event.target.anec.value
       event.target.anec.value = ''
-      dispatch(createAnec(content))
+      dispatch(createAnec({
+        type: 'anecdotes/createNote',
+        payload: content,
+      }))
     }
 
     return <div>

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeAnecdotes } from '../reducers/anecdoteReducer'
+import { initializeAnecdotes, updateAnecdote } from '../reducers/anecdoteReducer'
 
 const AnecdoteForm = () => {
     const dispatch = useDispatch()
@@ -12,10 +12,7 @@ const AnecdoteForm = () => {
     }, []) 
   
     const vote = (anecdote) => {
-      dispatch({
-        type: 'anecdotes/voteAnec',
-        payload: anecdote.id,
-      })
+      dispatch(updateAnecdote(anecdote))
       dispatch({
         type: 'notification/displayNotification',
         payload: { status: 'success', message: `you voted ${anecdote.content}`},

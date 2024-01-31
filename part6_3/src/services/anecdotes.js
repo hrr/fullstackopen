@@ -26,15 +26,15 @@ const create = (data) => {
       return response
 }
 
-// const update = (data) => {
-//   const headers = {
-//     'Content-Type': 'application/json',
-//     'Authorization': token
-//   }
-//   const request = axios.put(`${baseUrl}/${data.id}`, data, { headers })
-//   const response = request.then(response => response.data)
-//   return response
-// }
+const update = (data) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    // 'Authorization': token
+  }
+  const request = axios.put(`${baseUrl}/${data.id}`, data, { headers })
+  const response = request.then(response => response.data)
+  return response
+}
 
 // const del = (data) => {
 //   const headers = {
@@ -48,4 +48,4 @@ const create = (data) => {
 
 
 // export default { getAll, setToken, create, update, del }
-export default { getAll, create }
+export default { getAll, create, update }

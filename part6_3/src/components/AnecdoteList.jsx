@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeAnecdotes, updateAnecdote } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
     const dispatch = useDispatch()
@@ -13,15 +14,8 @@ const AnecdoteForm = () => {
   
     const vote = (anecdote) => {
       dispatch(updateAnecdote(anecdote))
-      dispatch({
-        type: 'notification/displayNotification',
-        payload: { status: 'success', message: `you voted ${anecdote.content}`},
-      })
-      setTimeout(() => {
-        dispatch({
-          type: 'notification/hideNotification'
-        })
-      }, 5000)
+      dispatch(updateAnecdote(anecdote))
+      dispatch(setNotification({ status: 'success', message: `you voted ${anecdote.content}`}))
     }
 
     return <>

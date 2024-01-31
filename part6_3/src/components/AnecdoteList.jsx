@@ -1,9 +1,15 @@
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { initializeAnecdotes } from '../reducers/anecdoteReducer'
 
 const AnecdoteForm = () => {
     const dispatch = useDispatch()
     const anecdotes = useSelector(state => state.anecdotes)
     const filter = useSelector(state => state.filter)
+
+    useEffect(() => {
+      dispatch(initializeAnecdotes())  
+    }, []) 
   
     const vote = (anecdote) => {
       dispatch({
